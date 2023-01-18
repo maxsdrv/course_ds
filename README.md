@@ -20,6 +20,8 @@ Once VS Code launches, create the Jupyter notebook that will be used for the tut
 
 Creating a new Jupyter Notebook
 
+![create-notebook](https://user-images.githubusercontent.com/34602478/213167614-36833ead-e99a-430e-accb-c309e88e8dad.png)
+
 Note: Alternatively, from the VS Code File Explorer, you can use the New File icon to create a Notebook file named hello.ipynb.
 
 Save the file as hello.ipynb using File > Save As....
