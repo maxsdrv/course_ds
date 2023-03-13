@@ -40,9 +40,42 @@ def from_str_to_int(str):
 
     return number_int
 
+def hw1():
+    str_nums = "100, 50, 55, 2, 3, 1, h, 9, pi, 400, ds, 4039"
+    prepare_list = str_nums.split(" ")
+    res_list = []
+    for i in prepare_list:
+        try:
+            int(i)
+            res_list.append(int(i))
+        except ValueError:
+            pass 
+        else:
+         res_list.sort()
+         print(*res_list, sep=", ")
+
+
+
+
+
+
+def real_round(args):
+    count_digit = len(args[0]) - 1
+    numb = eval(args[0].replace(",", ".")) 
+    digit = eval(args[1])
+    print(count_digit)
+
+    
+def lower_round(args):
+    args[0] = args[0].replace(",", ".")
+    return round(float(args[0]), int(args[1]))
+
+def upper_round(args):
+    args[0] = args[0].replace(",", ".")
+    return round(float(args[0]), int(args[1]))
 
 if __name__ == '__main__':
-    print("test");
+    print("test")
 
 number_str = "6"
 dir(number_str)
@@ -59,9 +92,32 @@ print(from_str_to_int("-59"))
 
 ######################################
 
+# str_input = input("Python helper")
+str_input = "ОКРУГЛ(2.15;1)"
+res_str = ""
 
+it_begin = str_input.find("(") #iterator of begin list arguments
+it_end = str_input.find(")") #iterator of end list arguments
+if it_begin==-1 or it_end==-1:
+    print("Error, function is not correct\n"
+          "Please visit Excel https://...")
 
+res_str = str_input[it_begin+1:it_end] # slice string for correct list function arguments
 
+arg_list = res_str.split(";") 
+print(arg_list[0], arg_list[1])
 
+func_str = str_input[:str_input.find("(")] #for function name then we call it
+print(func_str.lower())
 
+result = 0
 
+if func_str == "ОКРУГЛ":
+    result = real_round(arg_list)
+elif func_str == "ОКРУГЛВНИЗ":
+    result = lower_round(arg_list)
+else:
+    result = upper_round(arg_list)
+
+print("Python helper is monster: ", result)
+print(round(3.2, 0))
