@@ -54,25 +54,133 @@ def hw1():
          res_list.sort()
          print(*res_list, sep=", ")
 
-
-
-
-
-
 def real_round(args):
-    count_digit = len(args[0]) - 1
-    numb = eval(args[0].replace(",", ".")) 
-    digit = eval(args[1])
-    print(count_digit)
-
+    print("It is test function real_round")
+    if eval(args[0]) > 0 and eval(args[1]) > 0:
+        args[0] += "9"    
+        return round(eval(args[0]), eval(args[1]))
+    else:
+        return round(eval(args[0]), eval(args[1]))
     
 def lower_round(args):
-    args[0] = args[0].replace(",", ".")
-    return round(float(args[0]), int(args[1]))
+    print("It is test function lower_round")
+    before_comma = args[0][:args[0].index(".")]
+    after_comma = args[0][args[0].index(".") + 1:]
+    n_round = eval(args[1])
+
+    if args[1].startswith("-"):
+        print("Negative rounding")
+        if n_round - 1 > len(before_comma):
+           print("Error value of rounding, when rounding is negative")    
+           return -1
+        if eval(before_comma[n_round]) >= 5:
+            before_comma = before_comma[:n_round] + '1' + before_comma[n_round + 1:]
+            new_str = before_comma + "." + after_comma
+            print(new_str)
+            return round(eval(new_str), n_round)
+
+    elif args[0].startswith("-"):
+        print("Negative decimal")
+
+        if n_round > len(after_comma):
+            print("Error value of rounding, when decimal is negative")
+            return -1
+        
+        if eval(after_comma[n_round]) >= 5:
+            after_comma = after_comma[:n_round] + '1' + after_comma[n_round + 1:] 
+            new_str = before_comma + "." + after_comma
+            return round(eval(new_str), n_round)
+    else:
+        print("Real rounding")
+        after_comma = after_comma[:n_round] + '1' + after_comma[n_round + 1:]
+        new_str = before_comma + "." + after_comma
+        return round(eval(new_str), n_round)
+
 
 def upper_round(args):
-    args[0] = args[0].replace(",", ".")
-    return round(float(args[0]), int(args[1]))
+    before_comma = args[0][:args[0].index(".")]
+    after_comma = args[0][args[0].index(".") + 1:]
+    n_round = eval(args[1])
+
+    if args[1].startswith("-"):
+        print("Negative rounding")
+        if n_round-1 > len(before_comma):
+            print("Error value of rounding, when rounding is negative")    
+            return -1
+
+        if eval(before_comma[n_round]) <= 5:
+            before_comma = before_comma[:n_round] + '9' + before_comma[n_round + 1:]
+            new_str = before_comma + "." + after_comma
+            print(new_str)
+            return round(eval(new_str), n_round)
+
+    elif args[0].startswith("-"):
+        print("Negative decimal")
+
+        if n_round > len(after_comma):
+            print("Error value of rounding, when decimal is negative")
+            return -1
+        
+        if eval(after_comma[n_round]) <= 5:
+            after_comma = after_comma[:n_round] + '9' + after_comma[n_round + 1:] 
+            new_str = before_comma + "." + after_comma
+            return round(eval(new_str), n_round)
+    else:
+        print("Real rounding")
+        after_comma = after_comma[:n_round] + '9' + after_comma[n_round + 1:]
+        new_str = before_comma + "." + after_comma
+        return round(eval(new_str), n_round)
+
+def check_more(left):
+    return left >= 5
+
+def check_less(left):
+    return left <= 5
+
+def my_round(args, prefix):
+    print("Test my rounding")
+
+    before_comma = args[0][:args[0].index(".")]
+    after_comma = args[0][args[0].index(".") + 1:]
+    n_round = eval(args[1])
+    flag = type(bool)
+
+    if eval(prefix) > 5:
+        flag = check_less(eval(before_comma[n_round]))
+    else:
+        flag = check_more(eval(before_comma[n_round]))
+
+    if args[1].startswith("-"):
+        print("Negative rounding")
+        if n_round-1 > len(before_comma):
+            print("Error value of rounding, when rounding is negative")    
+            return -1
+
+    if flag:
+        before_comma = before_comma[:n_round] + prefix + before_comma[n_round + 1:]
+        new_str = before_comma + "." + after_comma
+        print(new_str)
+        return round(eval(new_str), n_round)
+
+    elif args[0].startswith("-"):
+        print("Negative decimal")
+
+        if n_round > len(after_comma):
+            print("Error value of rounding, when decimal is negative")
+            return -1
+        
+        if flag:
+            after_comma = after_comma[:n_round] + prefix + after_comma[n_round + 1:] 
+            new_str = before_comma + "." + after_comma
+            return round(eval(new_str), n_round)
+    else:
+        print("Real rounding")
+        after_comma = after_comma[:n_round] + prefix + after_comma[n_round + 1:]
+        new_str = before_comma + "." + after_comma
+        return round(eval(new_str), n_round)
+
+
+
 
 if __name__ == '__main__':
     print("test")
@@ -88,12 +196,12 @@ ord(number_str) - ord("0")
 
 #####################################
 task_str = "61032"
-print(from_str_to_int("-59"))
+# print(from_str_to_int("-59"))
 
 ######################################
 
 # str_input = input("Python helper")
-str_input = "ОКРУГЛ(2.15;1)"
+str_input = "ОКРУГЛВНИЗ(76,9;0)"
 res_str = ""
 
 it_begin = str_input.find("(") #iterator of begin list arguments
@@ -105,19 +213,21 @@ if it_begin==-1 or it_end==-1:
 res_str = str_input[it_begin+1:it_end] # slice string for correct list function arguments
 
 arg_list = res_str.split(";") 
+arg_list[0] = arg_list[0].replace(",", ".")
 print(arg_list[0], arg_list[1])
 
 func_str = str_input[:str_input.find("(")] #for function name then we call it
-print(func_str.lower())
+print(func_str)
 
 result = 0
 
 if func_str == "ОКРУГЛ":
     result = real_round(arg_list)
 elif func_str == "ОКРУГЛВНИЗ":
-    result = lower_round(arg_list)
+    # result = lower_round(arg_list)
+    result = my_round(arg_list, '1')
 else:
-    result = upper_round(arg_list)
+    # result = upper_round(arg_list)
+    result = my_round(arg_list, '9')
 
-print("Python helper is monster: ", result)
-print(round(3.2, 0))
+print("Python helper: ", result)
